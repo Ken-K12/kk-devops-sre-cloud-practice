@@ -17,7 +17,7 @@ metadata:
 spec:
   initContainers:
   - name: init-myservice
-    image: busybox:1.28
+    image: busybox
     command: ["sleep", "20"]
   containers:
   - command:

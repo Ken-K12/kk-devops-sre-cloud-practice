@@ -1,0 +1,183 @@
+# Please edit the object below. Lines beginning with a '#' will be ignored,
+# and an empty file will abort the edit. If an error occurs while saving this file will be
+# reopened with the relevant failures.
+#
+# pods "orange" was not valid:
+# * spec: Forbidden: pod updates may not change fields other than `spec.containers[*].image`,`spec.initContainers[*].image`,`spec.activeDeadlineSeconds`,`spec.tolerations` (only additions to existing tolerations),`spec.terminationGracePeriodSeconds` (allow it to be set to 1 if it was previously negative)
+# @@ -95,7 +95,7 @@
+#     "Command": [
+#      "sh",
+#      "-c",
+# -    "sleeeep 2;"
+# +    "sleep 2;"
+#     ],
+#     "Args": null,
+#     "WorkingDir": "",
+
+#
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2026-10-29T12:31:45Z"
+  generation: 1
+  name: orange
+  namespace: default
+  resourceVersion: "1644"
+  uid: 11523b81-6d07-4f7e-ba16-832a9087da40
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - echo The app is running! && sleep 3600
+    image: busybox:1.28
+    imagePullPolicy: IfNotPresent
+    name: orange-container
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-tqdtk
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  initContainers:
+  - command:
+    - sh
+    - -c
+    - sleep 2;
+    image: busybox
+    imagePullPolicy: Always
+    name: init-myservice
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-tqdtk
+      readOnly: true
+  nodeName: controlplane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-tqdtk
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-29T12:31:46Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-29T12:31:45Z"
+    message: 'containers with incomplete status: [init-myservice]'
+    observedGeneration: 1
+    reason: ContainersNotInitialized
+    status: "False"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-29T12:31:45Z"
+    message: 'containers with unready status: [orange-container]'
+    observedGeneration: 1
+    reason: ContainersNotReady
+    status: "False"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-29T12:31:45Z"
+    message: 'containers with unready status: [orange-container]'
+    observedGeneration: 1
+    reason: ContainersNotReady
+    status: "False"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-10-29T12:31:45Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - image: busybox:1.28
+    imageID: ""
+    lastState: {}
+    name: orange-container
+    ready: false
+    restartCount: 0
+    started: false
+    state:
+      waiting:
+        reason: PodInitializing
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-tqdtk
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 192.168.92.190
+  hostIPs:
+  - ip: 192.168.92.190
+  initContainerStatuses:
+  - containerID: containerd://848a8379ae544e1a7bc8652b63d3e9b7b235c89c3a15a014b71e10c0347cf914
+    image: docker.io/library/busybox:latest
+    imageID: docker.io/library/busybox@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
+    lastState:
+      terminated:
+        containerID: containerd://93207f6b6d9fc39202cb581ac78aaafea037978406ef7ce6e654f12b80be006b
+        exitCode: 127
+        finishedAt: "2026-10-29T12:32:01Z"
+        reason: Error
+        startedAt: "2026-10-29T12:32:01Z"
+    name: init-myservice
+    ready: false
+    resources: {}
+    restartCount: 3
+    started: false
+    state:
+      terminated:
+        containerID: containerd://848a8379ae544e1a7bc8652b63d3e9b7b235c89c3a15a014b71e10c0347cf914
+        exitCode: 127
+        finishedAt: "2026-10-29T12:32:25Z"
+        reason: Error
+        startedAt: "2026-10-29T12:32:25Z"
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-tqdtk
+      readOnly: true
+      recursiveReadOnly: Disabled
+  observedGeneration: 1
+  phase: Pending
+  podIP: 10.22.0.15
+  podIPs:
+  - ip: 10.22.0.15
+  qosClass: BestEffort
+  startTime: "2026-10-29T12:31:45Z"
